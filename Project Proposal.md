@@ -17,7 +17,7 @@ Texts, diagrams, or pictures would be all fine
 
 ## Project Management:
 - Breakdown of tasks
-  - (Design, Implementation, Testing)[https://trello.com/invite/b/3cojUJlh/ATTI8e29e608ab0c6605c77fc9270a2ed50962869D3A/cs-530-laundry-timer]
+  - [Design, Implementation, Testing](https://trello.com/invite/b/3cojUJlh/ATTI8e29e608ab0c6605c77fc9270a2ed50962869D3A/cs-530-laundry-timer)
 - Project timeline/milestones
 - Distribution of tasks
   - Each group member can be involved in one or more development task categories
