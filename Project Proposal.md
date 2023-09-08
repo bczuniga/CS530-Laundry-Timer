@@ -16,10 +16,17 @@
 - There are a few products out there that can accomplish the same outcome of receiving a notification when your laundry is done. For example, any Samsung washing machine or dryer that is "Samsung SmartThings" enabled, allowing someone to use their app to receive notifications whenever their  laundry is done.
 
 ## Project Management:
-- Breakdown of tasks
+- Breakdown/Distribution of tasks
     - [Design, Implementation, Testing](https://trello.com/invite/b/3cojUJlh/ATTI8e29e608ab0c6605c77fc9270a2ed50962869D3A/cs-530-laundry-timer)
 - Project timeline/milestones
-- Distribution of tasks
-  - Each group member can be involved in one or more development task categories
-  - Agile development (Sprints) or Waterfall development
+    - [ ] Getting first prototype being that the system integration between hardware and software works
+    - [ ] Getting the main function of our system to work, i.e. getting any output from our system
+    - [ ] Setting up Discord integration to allow for Discord notifications via webhooks
+    - [ ] Edge-case testing (false alarms, power outages, ideal conditions)
+    - [ ] \(Optional) Feature creep
 - Current progress
+    - [X] Buy the hardware
+    - [X] Setup development environment
+    - [X] Install necessary software
+    - [ ] Create UML diagrams
+    - *Add more as necessary*
