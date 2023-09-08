@@ -10,7 +10,7 @@
 -	We want to make an affordable conversion of a non-smart washing machine into a smart washing machine using an Arduino. 
 
 ### Breakdown of functions
-[UML Diagram](/UML Diagram.md)
+[UML Diagram](/UMLDiagram.md)
 
 ### Competitor products, if there are any
 
