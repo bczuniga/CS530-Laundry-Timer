@@ -7,11 +7,10 @@
 -	Sometimes we forget about our laundry because we want to optimize our time. So we often turn our attention to other tasks which may take up more time than the laundry timer. We also realize that some people may not be able to afford smart laundry machines so we can offer assistance into allowing those laundry machines to work similarly to smart laundry machines by making this project.
 
 ### Objective
-Should partially solve a practical problem in real-world
 -	We want to make an affordable conversion of a non-smart washing machine into a smart washing machine using an Arduino. 
 
 ### Breakdown of functions
-Texts, diagrams, or pictures would be all fine
+[UML Diagram](/UML Diagram.md)
 
 ### Competitor products, if there are any
 
