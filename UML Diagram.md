@@ -7,4 +7,10 @@ classDiagram
     
 }
 
+    class Loop {
+        int x
+        int y
+        int z
+}
+
 ```
