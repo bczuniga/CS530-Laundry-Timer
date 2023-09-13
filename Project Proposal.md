@@ -16,7 +16,9 @@
 
 ## Project Management:
 - Breakdown/Distribution of tasks
-    - [Design, Implementation, Testing](https://trello.com/invite/b/3cojUJlh/ATTI8e29e608ab0c6605c77fc9270a2ed50962869D3A/cs-530-laundry-timer)
+    - [Design, Implementation, Testing (Broken Trello link for now)](https://trello.com/invite/b/3cojUJlh/ATTI8e29e608ab0c6605c77fc9270a2ed50962869D3A/cs-530-laundry-timer)
+    - Brendel will be in charge of hardware related issues concerning the physical construction of the Arduino board and wiring along with the sensors reading properly.
+    - Brylle will be in charge of the software programming, developing and testing the code to get our selected hardware components to react and respond to the data the sensors are given.
 - Project timeline/milestones
     - [ ] Getting first prototype being that the system integration between hardware and software works
     - [ ] Getting the main function of our system to work, i.e. getting any output from our system
