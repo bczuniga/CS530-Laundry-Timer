@@ -1,5 +1,4 @@
 # CS 530 Project Proposal
-## Name of teammates
 **Brendel Zuniga, Brylle Isaiah Villoso**
 
 ## Project Description
@@ -10,7 +9,7 @@
 - We want to make an affordable conversion of a non-smart washing machine into a smart washing machine using an Arduino. 
 
 ### Breakdown of functions
-[UML Diagram](/UML%20Diagram.md)
+[UML Diagram/Flow Chart](/UML%20Diagram.md)
 
 ### Competitor products, if there are any
 - There are a few products out there that can accomplish the same outcome of receiving a notification when your laundry is done. For example, any Samsung washing machine or dryer that is "Samsung SmartThings" enabled, allowing someone to use their app to receive notifications whenever their  laundry is done.
@@ -28,5 +27,6 @@
     - [X] Buy the hardware
     - [X] Setup development environment
     - [X] Install necessary software
-    - [ ] Create UML diagrams
+    - [ ] Draft UML diagrams and flowchart
+    - [ ] Refine UML diagrams and flowchart
     - *Add more as necessary*
