@@ -15,7 +15,7 @@ classDiagram
         int prevX
         int prevY
         int prevZ
-        
+
         delay()
 
 }
@@ -27,4 +27,7 @@ classDiagram
         const int waitForCycle
 }
 
+    class AlertSystem {
+        
+}
 ```
