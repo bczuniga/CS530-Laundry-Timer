@@ -31,4 +31,6 @@ classDiagram
     class AlertSystem {
         
 }
+
+    Loop o-- AlertSystem
 ```
