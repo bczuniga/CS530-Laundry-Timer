@@ -33,4 +33,6 @@ classDiagram
 }
 
     Loop o-- AlertSystem
+    Loop o-- GlobalVariables
+    Setup o-- GlobalVariables
 ```
