@@ -8,14 +8,10 @@ classDiagram
 }
 
     class Loop {
-        int x
-        int y
-        int z
-        
-        int prevX
-        int prevY
-        int prevZ
-
+        int dispX
+        int dispY
+        int dispZ
+        int currentWait
         delay()
 
 }
@@ -25,6 +21,11 @@ classDiagram
         const int yPin
         const int zPin
         const int waitForCycle
+        bool motionDetected
+        bool alarmSetOff
+        int currX
+        int currY
+        int currZ
 }
 
     class AlertSystem {
