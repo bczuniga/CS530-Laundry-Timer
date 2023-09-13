@@ -44,15 +44,14 @@ classDiagram
 ---
 title: Flow Chart
 ---
-stateDiagram-v2
+flowchart
     ProgramStart --> Initialize
-    Initialize --> startBufferTimer
     Initialize --> Loop
     Loop --> checkStatus
-    checkStatus --> Loop : Movement Detected
-    checkStatus --> checkTimer : Movement Not Detected
+    checkStatus --Movement Detected--> Loop
+    checkStatus --Movement Not Detected--> checkTimer
     
-    checkTimer --> Loop : Buffer Timer Not Elapsed
-    checkTimer --> notifyUser : Buffer Timer Elapsed
+    checkTimer --Buffer Timer Not Elapsed--> Loop
+    checkTimer --Buffer Timer Elapsed--> notifyUser
     
 ```
