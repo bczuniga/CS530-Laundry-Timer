@@ -22,7 +22,8 @@
 
 #include <SPI.h>
 #include <WiFiNINA.h>
-#include <HttpClient.h>
+#include <Arduino_LSM6DS3.h>
+#include <Timer.h>
 
 #include "arduino_secrets.h" 
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
@@ -41,75 +42,59 @@ char server[] = "discord.com";    // name address for Google (using DNS)
 // that you want to connect to (port 80 is default for HTTP):
 WiFiSSLClient client;
 
+float x, y, z;
+Timer time;
+
 void setup() {
-  //Initialize serial and wait for port to open:
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
-
-  // check for the WiFi module:
-  if (WiFi.status() == WL_NO_MODULE) {
-    Serial.println("Communication with WiFi module failed!");
-    // don't continue
-    while (true);
-  }
-
-  String fv = WiFi.firmwareVersion();
-  if (fv < WIFI_FIRMWARE_LATEST_VERSION) {
-    Serial.println("Please upgrade the firmware");
-  }
-
-  // attempt to connect to WiFi network:
-  while (status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    status = WiFi.begin(ssid, pass);
-
-    // wait 10 seconds for connection:
-    delay(10000);
-  }
-  Serial.println("Connected to WiFi");
-  printWifiStatus();
-
-  Serial.println("\nStarting connection to server...");
-  // if you get a connection, report back via serial:
-  
-  if (client.connect(server, 443)) {
-    String postBody = "{\"content\" : \"This message is being sent by the Arduino Board\"}";
-
-    Serial.println("connected to server");
-    // Make a HTTP request:
-    client.println("POST https://discord.com/api/webhooks/1174468441269354577/M9YyWOpfK2TY0ULpsNlE5JXBP-HBB4QiOamKgURO7OHVvXTB_rkvOumCPEXaZfz5GDX1 HTTP/1.1");
-    client.println("Host: discord.com");
-    client.println("Content-Type: application/json");
-    client.print("Content-Length: ");
-    client.println(postBody.length());
-    client.println("Connection: close");
-    client.println();
-    client.println(postBody);
-    
-  }
+  for(int i = 6; i < 10; i++)
+    pinMode(i, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  for(int i = 6; i < 10; i++)
+    digitalWrite(i, LOW);
+  digitalWrite(6, HIGH);
+  IMU.begin();
+  connectToWiFi();
+  IMU.readAcceleration(x, y, z);
+  digitalWrite(6, LOW);
 }
 
 void loop() {
-  // if there are incoming bytes available
-  // from the server, read them and print them:
-  while (client.available()) {
-    char c = client.read();
-    Serial.write(c);
+  float oldX = x;
+  float oldY = y;
+  float oldZ = z;
+  float oldR = sqrt(oldX*oldX + oldY*oldY + oldZ*oldZ);
+  IMU.readAcceleration(x, y, z);
+  float R = sqrt(x*x + y*y + z*z);
+  if (time.state() == RUNNING) {
+    Serial.println(time.read());
+    digitalWrite(8, HIGH);
+    digitalWrite(7, LOW);
+  }
+  if (abs(oldR - R) >= 0.25) {
+    // Serial.print("X = ");
+    // Serial.print(oldX);
+    // Serial.print("\t");
+    // Serial.print("Y = ");
+    // Serial.print(oldY);
+    // Serial.print("\t");
+    // Serial.print("Z = ");
+    // Serial.println(oldZ);
+    time.start();
+    digitalWrite(8, LOW);
+  }
+  if (time.read() >= 5000) {
+    time.pause();
   }
 
-  // if the server's disconnected, stop the client:
-  if (!client.connected()) {
-    Serial.println();
-    Serial.println("disconnecting from server.");
-    client.stop();
-
-    // do nothing forevermore:
-    while (true);
+  if (time.state() == PAUSED) {
+    Serial.println("Laundry is finished!");
+    Serial.println(time.read());
+    // postWebhook();
+    digitalWrite(7, HIGH);
+    digitalWrite(8, LOW);
+    time.stop();
   }
+
 }
 
 
@@ -128,4 +113,70 @@ void printWifiStatus() {
   Serial.print("signal strength (RSSI):");
   Serial.print(rssi);
   Serial.println(" dBm");
+}
+
+void connectToWiFi() {
+  //Initialize serial and wait for port to open:
+  Serial.begin(9600);
+  // while (!Serial) {
+  //   ; // wait for serial port to connect. Needed for native USB port only
+  // }
+
+  // check for the WiFi module:
+  if (WiFi.status() == WL_NO_MODULE) {
+    Serial.println("Communication with WiFi module failed!");
+    for (int i = 0; i < 5; i++) {
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(250);
+      digitalWrite(LED_BUILTIN, LOW);
+      delay(250);
+    }
+    while (true);
+  }
+
+  String fv = WiFi.firmwareVersion();
+  if (fv < WIFI_FIRMWARE_LATEST_VERSION) {
+    Serial.println("Please upgrade the firmware");
+  }
+
+  // attempt to connect to WiFi network:
+  while (status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to SSID: ");
+    Serial.println(ssid);
+    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+    status = WiFi.begin(ssid, pass);
+
+    // wait 10 seconds for connection:
+    delay(10000);
+    for (int i = 0; i < 3; i++) {
+      digitalWrite(9, HIGH);
+      delay(250);
+      digitalWrite(9, LOW);
+      delay(250);
+    }
+    digitalWrite(9, HIGH);
+  }
+  Serial.println("Connected to WiFi");
+  printWifiStatus();
+  
+
+  Serial.println("\nStarting connection to server...");
+  // if you get a connection, report back via serial:
+}
+
+void postWebhook() {
+    if (client.connect(server, 443)) {
+    String postBody = "{\"content\" : \"Laundry is finished\"}";
+
+    Serial.println("connected to server");
+    // Make a HTTP request:
+    client.println("POST https://discord.com/api/webhooks/1174468441269354577/M9YyWOpfK2TY0ULpsNlE5JXBP-HBB4QiOamKgURO7OHVvXTB_rkvOumCPEXaZfz5GDX1 HTTP/1.1");
+    client.println("Host: discord.com");
+    client.println("Content-Type: application/json");
+    client.print("Content-Length: ");
+    client.println(postBody.length());
+    client.println("Connection: close");
+    client.println();
+    client.println(postBody);
+  }
 }
