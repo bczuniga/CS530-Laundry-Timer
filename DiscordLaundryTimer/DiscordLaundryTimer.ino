@@ -42,7 +42,8 @@ char server[] = "discord.com";    // name address for Google (using DNS)
 // that you want to connect to (port 80 is default for HTTP):
 WiFiSSLClient client;
 
-float x, y, z;
+float zeroX, zeroY, zeroZ, newX, newY, newZ;
+float zeroR, newR;
 Timer time;
 
 void setup() {
@@ -54,23 +55,22 @@ void setup() {
   digitalWrite(6, HIGH);
   IMU.begin();
   connectToWiFi();
-  IMU.readAcceleration(x, y, z);
+  IMU.readAcceleration(zeroX, zeroY, zeroZ);
+  zeroR = sqrt(zeroX*zeroX + zeroY*zeroY + zeroZ*zeroZ);
   digitalWrite(6, LOW);
 }
 
 void loop() {
-  float oldX = x;
-  float oldY = y;
-  float oldZ = z;
-  float oldR = sqrt(oldX*oldX + oldY*oldY + oldZ*oldZ);
-  IMU.readAcceleration(x, y, z);
-  float R = sqrt(x*x + y*y + z*z);
+  float newR = sqrt(newX*newX + newY*newY + newZ*newZ);
+  IMU.readAcceleration(newX, newY, newZ);
   if (time.state() == RUNNING) {
-    Serial.println(time.read());
+    Serial.print(time.read());
+    Serial.print("\t");
+    Serial.println(abs(zeroR-newR));
     digitalWrite(8, HIGH);
     digitalWrite(7, LOW);
   }
-  if (abs(oldR - R) >= 0.25) {
+  if (abs(newR-zeroR) >= 0.0025) {
     // Serial.print("X = ");
     // Serial.print(oldX);
     // Serial.print("\t");
@@ -81,22 +81,27 @@ void loop() {
     // Serial.println(oldZ);
     time.start();
     digitalWrite(8, LOW);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(100);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(100);
   }
-  if (time.read() >= 5000) {
+
+  if (time.read() >= 300000) {
     time.pause();
   }
 
   if (time.state() == PAUSED) {
     Serial.println("Laundry is finished!");
     Serial.println(time.read());
-    // postWebhook();
+    postWebhook();
     digitalWrite(7, HIGH);
     digitalWrite(8, LOW);
     time.stop();
+    while(true);
   }
 
 }
-
 
 void printWifiStatus() {
   // print the SSID of the network you're attached to:
@@ -149,24 +154,23 @@ void connectToWiFi() {
     // wait 10 seconds for connection:
     delay(10000);
     for (int i = 0; i < 3; i++) {
-      digitalWrite(9, HIGH);
+      digitalWrite(LED_BUILTIN, HIGH);
       delay(250);
-      digitalWrite(9, LOW);
+      digitalWrite(LED_BUILTIN, LOW);
       delay(250);
     }
-    digitalWrite(9, HIGH);
+    digitalWrite(LED_BUILTIN, HIGH);
   }
   Serial.println("Connected to WiFi");
   printWifiStatus();
   
-
   Serial.println("\nStarting connection to server...");
   // if you get a connection, report back via serial:
 }
 
 void postWebhook() {
     if (client.connect(server, 443)) {
-    String postBody = "{\"content\" : \"Laundry is finished\"}";
+    String postBody = "{\"content\" : \"Washer is finished!\"}";
 
     Serial.println("connected to server");
     // Make a HTTP request:
