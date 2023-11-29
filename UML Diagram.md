@@ -3,38 +3,46 @@
 ```mermaid
 classDiagram
 
-    class Setup {
-        Serial.begin()
+    class setup {
+        connectToWifi()
 }
 
-    class Loop {
-        int dispX
-        int dispY
-        int dispZ
-        int currentWait
-        delay()
-
+    class loop {
+        postWebhook()
 }
 
     class GlobalVariables {
-        const int xPin
-        const int yPin
-        const int zPin
-        const int waitForCycle
-        bool motionDetected
-        bool alarmSetOff
-        int currX
-        int currY
-        int currZ
+        char[] ssid
+        char[] pass
+        char[] server
+        int status
+        int keyIndex
+        float zeroX
+        float zeroY
+        float zeroZ
+        float zeroR
+        float newX
+        float newY
+        float newZ
+        float newR
+        WiFiSSLClient client
+        Timer time
 }
 
-    class AlertSystem {
-        
+    class postWebhook {
+        string postBody
 }
 
-    Loop o-- AlertSystem
-    Loop o-- GlobalVariables
-    Setup o-- GlobalVariables
+    class connectToWifi {
+        string fv
+
+}
+
+    loop o-- postWebhook
+    connectToWifi o-- setup
+    loop o-- GlobalVariables
+    setup o-- GlobalVariables
+    connectToWifi o-- GlobalVariables
 ```
 
 

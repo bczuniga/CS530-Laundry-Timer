@@ -174,6 +174,7 @@ void postWebhook() {
 
     Serial.println("connected to server");
     // Make a HTTP request:
+    // Please use your own discord webhook here! This webhook link will be deprecated!
     client.println("POST https://discord.com/api/webhooks/1174468441269354577/M9YyWOpfK2TY0ULpsNlE5JXBP-HBB4QiOamKgURO7OHVvXTB_rkvOumCPEXaZfz5GDX1 HTTP/1.1");
     client.println("Host: discord.com");
     client.println("Content-Type: application/json");
