@@ -1,7 +1,7 @@
 # CS530-Laundry-Timer
 
 ## Source Code 
-
+```
 #include <SPI.h>
 #include <WiFiNINA.h>
 #include <Arduino_LSM6DS3.h>
@@ -65,7 +65,9 @@ void postWebhook() {
   String postBody = "{\"content\" : \"Washer is finished!\"}";
   HTTP Request details
 }
-
+```
 ## Arduino Secrets Header File
+```
 #define SECRET_SSID ""
 #define SECRET_PASS ""
+```
