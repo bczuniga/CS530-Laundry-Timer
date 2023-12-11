@@ -1,5 +1,25 @@
 # CS530-Laundry-Timer
 
+## How-To
+[Product Demonstration](https://youtu.be/teNc_26mirE)
+
+### Components Needed:
+- Board with Wi-Fi NINA Module:
+  - Arduino MKR WiFi 1010;
+  - Arduino MKR VIDOR 4000;
+  - Arduino Uno WiFi Rev. 2; or
+  - Nano 33 IoT (what we used for testing)
+- Micro-USB to USB-A/USB-C for Power
+- A way to secure board to washer/dryer.
+
+### Setup:
+1. Download [DiscordLaundryTimer.ino](DiscordLaundryTimer/DiscordLaundryTimer.ino) and Arduino_Secrets.h (example file can be found [here](DiscordLaundryTimer/arduino_secrets.h.example.h).
+2. Download Dependencies listed below or [here](Source Code/libraries).
+3. Modify `arduino_secrets.h` with Wi-Fi credentials
+4. Modify `DiscordLaundryTimer.ino` with Discord server webhook link
+5. (Optional) Calibrate thresholds to your specific machine
+6. Upload code to board
+
 ## [Source Code](DiscordLaundryTimer/DiscordLaundryTimer.ino)
 ```c++
 #include <SPI.h>
