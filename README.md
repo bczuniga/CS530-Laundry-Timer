@@ -1,7 +1,7 @@
 # CS530-Laundry-Timer
 
 ## Source Code 
-```
+```c++
 #include <SPI.h>
 #include <WiFiNINA.h>
 #include <Arduino_LSM6DS3.h>
