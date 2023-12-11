@@ -20,15 +20,18 @@
     - Brendel will be in charge of hardware related issues concerning the physical construction of the Arduino board and wiring along with the sensors reading properly.
     - Brylle will be in charge of the software programming, developing and testing the code to get our selected hardware components to react and respond to the data the sensors are given.
 - Project timeline/milestones
-    - [ ] Getting first prototype being that the system integration between hardware and software works
-    - [ ] Getting the main function of our system to work, i.e. getting any output from our system
-    - [ ] Setting up Discord integration to allow for Discord notifications via webhooks
-    - [ ] Edge-case testing (false alarms, power outages, ideal conditions)
+    - [X] Getting first prototype being that the system integration between hardware and software works
+    - [X] Getting the main function of our system to work, i.e. getting any output from our system
+    - [X] Setting up Discord integration to allow for Discord notifications via webhooks
+    - [X] Edge-case testing (false alarms, power outages, ideal conditions)
     - [ ] \(Optional) Feature creep
 - Current progress
     - [X] Buy the hardware
     - [X] Setup development environment
     - [X] Install necessary software
-    - [ ] Draft UML diagrams and flowchart
-    - [ ] Refine UML diagrams and flowchart
-    - *Add more as necessary*
+    - [X] Draft UML diagrams and flowchart
+    - [X] Refine UML diagrams and flowchart
+    - [X] Start prototyping
+    - [X] Figure out HTTPS POST requests
+    - [X] Calibrate thresholds
+    - [X] Real-life testing
