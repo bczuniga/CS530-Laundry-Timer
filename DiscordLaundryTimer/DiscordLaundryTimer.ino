@@ -1,68 +1,78 @@
 /*
-  Web client
-
- This sketch connects to a website (http://www.google.com)
- using the WiFi module.
-
- This example is written for a network using WPA encryption. For
- WEP or WPA, change the WiFi.begin() call accordingly.
-
- This example is written for a network using WPA encryption. For
- WEP or WPA, change the WiFi.begin() call accordingly.
-
- Circuit:
- * Board with NINA module (Arduino MKR WiFi 1010, MKR VIDOR 4000 and Uno WiFi Rev.2)
-
- created 13 July 2010
- by dlf (Metodo2 srl)
- modified 31 May 2012
- by Tom Igoe
- */
-
+@author Brylle Isaiah Villoso
+@author Brendel Zuniga
+@title CS 530 Systems Programming Project, Discord Laundry Timer
+@date December 11, 2023
+*/
 
 #include <SPI.h>
 #include <WiFiNINA.h>
 #include <Arduino_LSM6DS3.h>
 #include <Timer.h>
 
+// file that contains Wi-Fi credentials
 #include "arduino_secrets.h" 
-///////please enter your sensitive data in the Secret tab/arduino_secrets.h
 char ssid[] = SECRET_SSID;        // your network SSID (name)
-char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as key for WEP)
-int keyIndex = 0;            // your network key index number (needed only for WEP)
+char pass[] = SECRET_PASS;        // your network password (use for WPA, or use as key for WEP)
+int keyIndex = 0;                 // your network key index number (needed only for WEP)
 
 int status = WL_IDLE_STATUS;
-// if you don't want to use DNS (and reduce your sketch size)
-// use the numeric IP instead of the name for the server:
-//IPAddress server(74,125,232,128);  // numeric IP for Google (no DNS)
-char server[] = "discord.com";    // name address for Google (using DNS)
+char server[] = "discord.com";    // Discord host name
 
-// Initialize the Ethernet client library
-// with the IP address and port of the server
-// that you want to connect to (port 80 is default for HTTP):
+// Insert server webhook
+String webhookLink = "https://discord.com/api/webhooks/1174468441269354577/M9YyWOpfK2TY0ULpsNlE5JXBP-HBB4QiOamKgURO7OHVvXTB_rkvOumCPEXaZfz5GDX1";
+
+// Initialize Wi-Fi client to interface with HTTPS requests for webhooks
 WiFiSSLClient client;
 
+// values defined at program start as the zero value
 float zeroX, zeroY, zeroZ, newX, newY, newZ;
 float zeroR, newR;
 Timer time;
 
+/** LED Legend:
+LED_BUILTIN: Blinking = Wi-Fi module not detected, incompatible board
+9 - Yellow - Wi-Fi Status
+    - Slow blink: Attempting to connect to Wi-Fi
+    - Solid: Connection to Wi-Fi successful
+8 - Blue:    Timer in-progress
+7 - Green:   Timer complete, notification sent
+6 - Red:     Setup in-progress
+*/
+
 void setup() {
+  // set relevant pins to output
   for(int i = 6; i < 10; i++)
     pinMode(i, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
+
+  // set all LEDs to LOW
   for(int i = 6; i < 10; i++)
     digitalWrite(i, LOW);
+  
+  // Set Red LED to HIGH to indicate start of setup
   digitalWrite(6, HIGH);
+
+  // Initialize IMU (LSM6DSL for Nano 33 IoT)
   IMU.begin();
+
+  // Connect to Wi-Fi and send start notification
   connectToWiFi();
+
+  // Calibrate and zero-out values
   IMU.readAcceleration(zeroX, zeroY, zeroZ);
   zeroR = sqrt(zeroX*zeroX + zeroY*zeroY + zeroZ*zeroZ);
+
+  // Set Red LED to LOW to indicate setup complete
   digitalWrite(6, LOW);
 }
 
 void loop() {
-  float newR = sqrt(newX*newX + newY*newY + newZ*newZ);
+  // take current accelerator values, calculate position from zero
+  newR = sqrt(newX*newX + newY*newY + newZ*newZ);
   IMU.readAcceleration(newX, newY, newZ);
+
+  // flash out status
   if (time.state() == RUNNING) {
     Serial.print(time.read());
     Serial.print("\t");
@@ -70,7 +80,12 @@ void loop() {
     digitalWrite(8, HIGH);
     digitalWrite(7, LOW);
   }
+
+  // if the difference of new and zero radius is greater than threshold (currently 0.0025)
+  // reset timer
+  // blink Blue to indicate reset
   if (abs(newR-zeroR) >= 0.0025) {
+    // Serial output testing
     // Serial.print("X = ");
     // Serial.print(oldX);
     // Serial.print("\t");
@@ -87,10 +102,14 @@ void loop() {
     delay(100);
   }
 
+  // if no movement detected for X amount of minutes (currently set to 5 min)
+  // indicate timer end
   if (time.read() >= 300000) {
     time.pause();
   }
 
+  // if timer ended, post webhook, set Green to HIGH and Blue to LOW
+  // end of laundry timer until next reset
   if (time.state() == PAUSED) {
     Serial.println("Laundry is finished!");
     Serial.println(time.read());
@@ -103,6 +122,7 @@ void loop() {
 
 }
 
+// for use in debugging
 void printWifiStatus() {
   // print the SSID of the network you're attached to:
   Serial.print("SSID: ");
@@ -121,15 +141,13 @@ void printWifiStatus() {
 }
 
 void connectToWiFi() {
-  //Initialize serial and wait for port to open:
+  // initialize serial and wait for port to open:
   Serial.begin(9600);
-  // while (!Serial) {
-  //   ; // wait for serial port to connect. Needed for native USB port only
-  // }
 
-  // check for the WiFi module:
+  // check for the Wi-Fi module:
+  // if no Wi-Fi module detected, indicate connection error
   if (WiFi.status() == WL_NO_MODULE) {
-    Serial.println("Communication with WiFi module failed!");
+    Serial.println("Communication with Wi-Fi module failed!");
     for (int i = 0; i < 5; i++) {
       digitalWrite(LED_BUILTIN, HIGH);
       delay(250);
@@ -151,16 +169,18 @@ void connectToWiFi() {
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(ssid, pass);
 
-    // wait 10 seconds for connection:
-    delay(10000);
+    // flash Wi-Fi status
     for (int i = 0; i < 3; i++) {
-      digitalWrite(LED_BUILTIN, HIGH);
+      digitalWrite(9, HIGH);
       delay(250);
-      digitalWrite(LED_BUILTIN, LOW);
+      digitalWrite(9, LOW);
       delay(250);
     }
-    digitalWrite(LED_BUILTIN, HIGH);
+
+    // wait 10 seconds for connection:
+    delay(10000);
   }
+  digitalWrite(9, HIGH);
   Serial.println("Connected to WiFi");
   printWifiStatus();
   
@@ -169,13 +189,16 @@ void connectToWiFi() {
 }
 
 void postWebhook() {
-    if (client.connect(server, 443)) {
+  // connect to host server defined at beginning of code
+  // port = 80 for HTTP
+  // port = 443 for HTTPS
+  if (client.connect(server, 443)) {
     String postBody = "{\"content\" : \"Washer is finished!\"}";
 
     Serial.println("connected to server");
-    // Make a HTTP request:
-    // Please use your own discord webhook here! This webhook link will be deprecated!
-    client.println("POST https://discord.com/api/webhooks/1174468441269354577/M9YyWOpfK2TY0ULpsNlE5JXBP-HBB4QiOamKgURO7OHVvXTB_rkvOumCPEXaZfz5GDX1 HTTP/1.1");
+    // Make a HTTPS POST request:
+    // sends notification to discord webhook
+    client.println("POST " + webhookLink + " HTTP/1.1");
     client.println("Host: discord.com");
     client.println("Content-Type: application/json");
     client.print("Content-Length: ");
