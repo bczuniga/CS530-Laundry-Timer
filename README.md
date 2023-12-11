@@ -1,6 +1,6 @@
 # CS530-Laundry-Timer
 
-## Source Code 
+## [Source Code](DiscordLaundryTimer/DiscordLaundryTimer.ino)
 ```c++
 #include <SPI.h>
 #include <WiFiNINA.h>
