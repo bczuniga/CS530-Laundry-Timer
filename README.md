@@ -13,7 +13,7 @@
 - A way to secure board to washer/dryer.
 
 ### Setup:
-1. Download [DiscordLaundryTimer.ino](DiscordLaundryTimer/DiscordLaundryTimer.ino) and Arduino_Secrets.h (example file can be found [here](DiscordLaundryTimer/arduino_secrets.h.example.h).
+1. Download [DiscordLaundryTimer.ino](DiscordLaundryTimer/DiscordLaundryTimer.ino) and Arduino_Secrets.h (example file can be found [here](DiscordLaundryTimer/arduino_secrets.h.example.h)).
 2. Download Dependencies listed below or [here](Source Code/libraries).
 3. Modify `arduino_secrets.h` with Wi-Fi credentials
 4. Modify `DiscordLaundryTimer.ino` with Discord server webhook link
