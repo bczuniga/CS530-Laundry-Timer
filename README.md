@@ -35,7 +35,12 @@ Once you've completed the setup steps above, you can now start using the Discord
 4. Wait for Discord notification that timer has started
 5. Start washer/dryer
 
-## [Source Code](DiscordLaundryTimer/DiscordLaundryTimer.ino)
+## Code Breakdown
+<details>
+  <summary>DiscordLaundryTimer</summary>
+
+[Link to file](DiscordLaundryTimer/DiscordLaundryTimer.ino)
+  
 ```c++
 #include <SPI.h>
 #include <WiFiNINA.h>
@@ -101,8 +106,15 @@ void postWebhook() {
   HTTP Request details
 }
 ```
-## [Arduino Secrets Header File](DiscordLaundryTimer/arduino_secrets.h.example.h)
+</details>
+
+<details>
+  <summary>Arduino Secrets Header File</summary>
+  
+[Link to file](DiscordLaundryTimer/arduino_secrets.h.example.h)
+
 ```
 #define SECRET_SSID ""
 #define SECRET_PASS ""
 ```
+</details>
