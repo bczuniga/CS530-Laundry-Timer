@@ -16,9 +16,24 @@
 1. Download [DiscordLaundryTimer.ino](DiscordLaundryTimer/DiscordLaundryTimer.ino) and Arduino_Secrets.h (example file can be found [here](DiscordLaundryTimer/arduino_secrets.h.example.h)).
 2. Download Dependencies listed below or [here](Source Code/libraries).
 3. Modify `arduino_secrets.h` with Wi-Fi credentials
-4. Modify `DiscordLaundryTimer.ino` with Discord server webhook link
+4. Modify `DiscordLaundryTimer.ino` `webhookLink` field with Discord server webhook link
 5. (Optional) Calibrate thresholds to your specific machine
 6. Upload code to board
+
+### Dependencies:
+- ArduinoBLE
+- Arduino_LSM6DS3
+- FastIMU
+- Timer
+- WiFiNINA
+
+### Using the device
+Once you've completed the setup steps above, you can now start using the Discord Laundry Timer:
+1. Load washer/dryer with clothes
+2. Attach the board to a safe place on washer/dryer.
+3. Connect board to power
+4. Wait for Discord notification that timer has started
+5. Start washer/dryer
 
 ## [Source Code](DiscordLaundryTimer/DiscordLaundryTimer.ino)
 ```c++
