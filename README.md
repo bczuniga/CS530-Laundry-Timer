@@ -66,7 +66,7 @@ void postWebhook() {
   HTTP Request details
 }
 ```
-## Arduino Secrets Header File
+## [Arduino Secrets Header File](DiscordLaundryTimer/arduino_secrets.h.example.h)
 ```
 #define SECRET_SSID ""
 #define SECRET_PASS ""
